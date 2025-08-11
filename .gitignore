@@ -1,207 +1,108 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[codz]
-*$py.class
+Generador de Contraseñas Seguras con Interfaz Gráfica
+"""
 
-# C extensions
-*.so
+import tkinter as tk
+from tkinter import messagebox
+import random
+import string
+import pyperclip
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+# --- Función para evaluar la fortaleza ---
+def evaluar_fortaleza(contraseña):
+    # Calcula la longitud de la contraseña
+    longitud = len(contraseña)
+    tiene_mayusculas = any(c.isupper() for c in contraseña)
+    tiene_minusculas = any(c.islower() for c in contraseña)
+    tiene_numeros = any(c.isdigit() for c in contraseña)
+    tiene_especiales = any(c in string.punctuation for c in contraseña)
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+    # Puntaje basado en tipos de caracteres presentes
+    puntaje = sum([tiene_mayusculas, tiene_minusculas, tiene_numeros, tiene_especiales])
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+    if longitud >= 12 and puntaje == 4:
+        return "Fuerte", "green"
+    elif longitud >= 8 and puntaje >= 3:
+        return "Media", "orange"
+    else:
+        return "Débil", "red"
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
+# --- Generar contraseña ---
+def generar_contraseña():
+    try:
+        longitud = int(entrada_longitud.get())
+    except ValueError:
+        messagebox.showerror("Error", "Ingresa un número válido para la longitud")
+        return
 
-# Translations
-*.mo
-*.pot
+    if longitud < 4:
+        messagebox.showerror("Error", "La longitud mínima es 4")
+        return
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+    caracteres = ""
+    if var_mayusculas.get():
+        caracteres += string.ascii_uppercase
+    if var_minusculas.get():
+        caracteres += string.ascii_lowercase
+    if var_numeros.get():
+        caracteres += string.digits
+    if var_especiales.get():
+        caracteres += string.punctuation
 
-# Flask stuff:
-instance/
-.webassets-cache
+    if not caracteres:
+        messagebox.showerror("Error", "Selecciona al menos un tipo de carácter")
+        return
 
-# Scrapy stuff:
-.scrapy
+    contraseña = "".join(random.choice(caracteres) for _ in range(longitud))
+    entrada_resultado.delete(0, tk.END)
+    entrada_resultado.insert(0, contraseña)
 
-# Sphinx documentation
-docs/_build/
+    # Mostrar fortaleza
+    fortaleza, color = evaluar_fortaleza(contraseña)
+    etiqueta_fortaleza.config(text=f"Fortaleza: {fortaleza}", fg=color)
 
-# PyBuilder
-.pybuilder/
-target/
+# --- Copiar contraseña ---
+def copiar_contraseña():
+    contraseña = entrada_resultado.get()
+    if contraseña:
+        pyperclip.copy(contraseña)
+        messagebox.showinfo("Copiado", "La contraseña se ha copiado al portapapeles")
+    else:
+        messagebox.showwarning("Aviso", "No hay contraseña para copiar")
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# --- Interfaz ---
+ventana = tk.Tk()
+ventana.title("Generador de Contraseñas Seguras")
+ventana.geometry("400x350")
+ventana.resizable(False, False)
 
-# IPython
-profile_default/
-ipython_config.py
+# Entrada longitud
+tk.Label(ventana, text="Longitud:").pack(pady=5)
+entrada_longitud = tk.Entry(ventana, width=10)
+entrada_longitud.pack()
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+# Opciones
+var_mayusculas = tk.BooleanVar(value=True)
+var_minusculas = tk.BooleanVar(value=True)
+var_numeros = tk.BooleanVar(value=True)
+var_especiales = tk.BooleanVar(value=True)
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+tk.Checkbutton(ventana, text="Mayúsculas", variable=var_mayusculas).pack(anchor="w", padx=50)
+tk.Checkbutton(ventana, text="Minúsculas", variable=var_minusculas).pack(anchor="w", padx=50)
+tk.Checkbutton(ventana, text="Números", variable=var_numeros).pack(anchor="w", padx=50)
+tk.Checkbutton(ventana, text="Caracteres especiales", variable=var_especiales).pack(anchor="w", padx=50)
 
-# UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#uv.lock
+# Botón generar
+tk.Button(ventana, text="Generar", command=generar_contraseña).pack(pady=10)
 
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-#poetry.toml
+# Resultado
+entrada_resultado = tk.Entry(ventana, width=30)
+entrada_resultado.pack(pady=5)
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
-#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
+# Fortaleza
+etiqueta_fortaleza = tk.Label(ventana, text="Fortaleza: ", font=("Arial", 10, "bold"))
+etiqueta_fortaleza.pack()
 
-# pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
-#pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi
+# Botón copiar
+tk.Button(ventana, text="Copiar", command=copiar_contraseña).pack(pady=10)
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.envrc
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
-
-# Abstra
-# Abstra is an AI-powered process automation framework.
-# Ignore directories containing user credentials, local state, and settings.
-# Learn more at https://abstra.io/docs
-.abstra/
-
-# Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
-
-# Ruff stuff:
-.ruff_cache/
-
-# PyPI configuration file
-.pypirc
-
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
-.cursorignore
-.cursorindexingignore
-
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+ventana.mainloop()
