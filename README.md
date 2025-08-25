@@ -13,14 +13,12 @@ Proyecto que permite generar contraseñas seguras de manera rápida y confiable.
 - Compatible con Python 3.x.
 
 ## 📊 Diagramas de Flujo
-- [Diagrama de flujo principal](ruta_a_tu_diagrama1.xml)  
-- [Diagrama de generación de contraseñas](ruta_a_tu_diagrama2.xml)  
-- [Diagrama de copiado al portapapeles](ruta_a_tu_diagrama3.xml)  
-> *(Reemplaza `ruta_a_tu_diagramaX.xml` con el enlace o ruta real en tu repositorio)*
+- [Diagrama de flujo principal][[(ruta_a_tu_diagrama1.xml)  ](https://github.com/Rosaleonv/-Desarrollar-un-generador-seguro-de-contrase-as-Diagramas-de-flujos---codificaci-n-del-sistema-/blob/main/DIAGRAMAS%20DE%20FLUJO-Casos%20de%20Uso%201.png)](https://github.com/Rosaleonv/-Desarrollar-un-generador-seguro-de-contrase-as-Diagramas-de-flujos---codificaci-n-del-sistema-/blob/main/DIAGRAMAS%20DE%20FLUJO-Casos%20de%20Uso%201.png)
+- [Diagrama de generación de contraseñas] https://github.com/Rosaleonv/-Desarrollar-un-generador-seguro-de-contrase-as-Diagramas-de-flujos---codificaci-n-del-sistema-/blob/main/DIAGRAMAS%20DE%20FLUJO-Arquitectura.%202.png 
+- [Diagrama de copiado al portapapeles] https://github.com/Rosaleonv/-Desarrollar-un-generador-seguro-de-contrase-as-Diagramas-de-flujos---codificaci-n-del-sistema-/blob/main/DIAGRAMAS%20DE%20FLUJO-P%C3%A1gina-3..png
 
 ## 👥 Datos del Grupo
 - Rosa León – rosaleonv@example.com  
-- [Agregar otros integrantes]
 
 ## 🎯 Objetivo
 Proveer una herramienta que permita generar contraseñas seguras de forma fácil y rápida, fortaleciendo la protección de información sensible.
