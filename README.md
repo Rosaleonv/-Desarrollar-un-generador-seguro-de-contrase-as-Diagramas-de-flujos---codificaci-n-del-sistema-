@@ -34,7 +34,9 @@ Proveer una herramienta que permita generar contraseñas seguras de forma fácil
 ```bash
 pip install pyperclip
 
-## Codigo Generador de Contraseñas Seguras con Interfaz Gráfica
+### CODIGO DE SOFTWARE
+ """
+Generador de Contraseñas Seguras con Interfaz Gráfica
 """
 
 import tkinter as tk
@@ -45,14 +47,12 @@ import pyperclip
 
 # --- Función para evaluar la fortaleza ---
 def evaluar_fortaleza(contraseña):
-    # Calcula la longitud de la contraseña
     longitud = len(contraseña)
     tiene_mayusculas = any(c.isupper() for c in contraseña)
     tiene_minusculas = any(c.islower() for c in contraseña)
     tiene_numeros = any(c.isdigit() for c in contraseña)
     tiene_especiales = any(c in string.punctuation for c in contraseña)
 
-    # Puntaje basado en tipos de caracteres presentes
     puntaje = sum([tiene_mayusculas, tiene_minusculas, tiene_numeros, tiene_especiales])
 
     if longitud >= 12 and puntaje == 4:
@@ -92,7 +92,6 @@ def generar_contraseña():
     entrada_resultado.delete(0, tk.END)
     entrada_resultado.insert(0, contraseña)
 
-    # Mostrar fortaleza
     fortaleza, color = evaluar_fortaleza(contraseña)
     etiqueta_fortaleza.config(text=f"Fortaleza: {fortaleza}", fg=color)
 
